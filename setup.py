@@ -24,8 +24,8 @@ setup(
     license="BSD",
     maintainer="KCUForms team",
     maintainer_email="dennias.chiu@gmail.com",
-    author="Dennias Chiu",
-    author_email="dennias.chiu@gmail.com",
+    author="deefox",
+    author_email="602716933@qq.com",
     description=(
         "A flexible forms validation and rendering library for Python"
         " web development"
