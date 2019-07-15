@@ -10,7 +10,7 @@ development that inherited and learned form WTForms.
 # flake8: noqa
 from kcuforms import validators
 from kcuforms.fields import *
-from kcuforms.form import Form
-from kcuforms.validators import ValidationError
+from kcuforms.form import WebForm, SearchWebForm
+from kcuforms.errors import FieldError
 
 __version__ = "0.0.1dev"

@@ -1,11 +1,39 @@
-__all__ = (
-    "ValidationError",
-)
+import json
+from datetime import datetime as dt
 
-class ValidationError(ValueError):
-    """
-    Raised when a validator fails to validate its input.
-    """
+from kcuforms.errors import FieldError
 
-    def __init__(self, message="", *args, **kwargs):
-        ValueError.__init__(self, message, *args, **kwargs)
+
+def date_type(dt_str, fmt='%Y%m%d'):
+    return dt.strptime(dt_str, fmt)
+
+
+def list_type(lst_obj):
+    try:
+        if isinstance(lst_obj, (list, tuple)):
+            ret = lst_obj
+        elif isinstance(lst_obj, dict):
+            ret = [lst_obj]
+        else:
+            ret = json.loads(lst_obj)
+        return ret
+    except Exception as ex:
+        raise FieldError(u'Val: {}, Reason: {}, Type: list'.format(lst_obj, ex))
+
+
+def dict_type(dict_obj):
+    try:
+        if isinstance(dict_obj, dict):
+            ret = dict_obj
+        else:
+            ret = json.loads(dict_obj)
+        return ret
+    except Exception as ex:
+        raise FieldError(u'Val: {}, Reason: {}, Type: list'.format(dict_obj, ex))
+
+
+def many_type(range_string):
+    if isinstance(range_string, (tuple, list)):
+        return range_string
+    else:
+        return range_string.split(',')
