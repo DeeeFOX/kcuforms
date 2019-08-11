@@ -20,7 +20,7 @@ setup(
     project_urls=OrderedDict(
         (
             ("Documentation", "https://github.com/DeeeFOX/kcuforms"),
-            ("Code", "https://github.com/DeeeFOX/kcuforms/src/kcuforms"),
+            ("Code", "https://github.com/DeeeFOX/kcuforms/tree/master/src/kcuforms"),
             ("Issue tracker", "https://github.com/DeeeFOX/kcuforms/issues"),
         )
     ),
