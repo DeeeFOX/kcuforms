@@ -24,6 +24,7 @@ __all__ = (
     "ListField",
     "StringField",
     "DictField",
+    "FloatField"
 )
 
 
@@ -248,3 +249,8 @@ class DictField(BaseField):
             else:
                 rets[k] = self.validators.get(k, self.validator).validate(v)
         return rets
+
+
+class FloatField(IntegerField):
+    _TYPE = float
+    _DEFAULT = 0.0
