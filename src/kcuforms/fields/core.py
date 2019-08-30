@@ -24,7 +24,9 @@ __all__ = (
     "ListField",
     "StringField",
     "DictField",
-    "FloatField"
+    "FloatField",
+    "ListArrayField",
+    "ListStrField"
 )
 
 
@@ -35,13 +37,17 @@ class BaseField(object):
         'name': '_NAME',
         'required': '_REQUIRED',
         'type': '_TYPE',
-        'default': '_DEFAULT'
+        'default': '_DEFAULT',
+        'action': '_ACTION',
+        'location': '_LOCATION'
     }
 
     _NAME = None
     _REQUIRED = False
     _TYPE = None
     _DEFAULT = None
+    _ACTION = None
+    _LOCATION = None
 
     def __init__(self, *args, **kwargs):
         for key, default_name in self.__baseattrs__.items():
@@ -200,7 +206,7 @@ class ManyField(BaseField):
         return rets
 
 
-class ListField(BaseField):
+class ListStrField(BaseField):
     _TYPE = partial(list_type)
     _DEFAULT = []
     _MIN = 0
@@ -208,7 +214,7 @@ class ListField(BaseField):
     _VALIDATOR = StringField()
 
     def __init__(self, *args, **kwargs):
-        super(ListField, self).__init__(*args, **kwargs)
+        super(ListStrField, self).__init__(*args, **kwargs)
         self.validator = kwargs.get('validator', self._VALIDATOR)
         self.default = kwargs.get('default', self._DEFAULT)
         self.type = kwargs.get('type', self._TYPE)
@@ -223,6 +229,30 @@ class ListField(BaseField):
             ret.append(self.validator.validate(v))
         if len(ret) > self.max or len(ret) < self.min:
             raise FieldError(u'{}: length {} not in [{}, {}]'.format(self.name, len(ret), self.min, self.max))
+        return ret
+
+
+ListField = ListStrField
+
+
+class ListArrayField(ListField):
+    _TYPE = str
+    _ACTION = 'append'
+    _DEFAULT = []
+    _MIN = 0
+    _MAX = sys.maxsize
+    _VALIDATOR = StringField()
+
+    def __init__(self):
+        super(ListfArrayField, self).__init__(*args, **kwargs)
+
+    @field_exception
+    def validate(self, val):
+        ret = []
+        for v in val:
+            ret.append(self.validator.validate(v))
+        if len(ret) > self.max or len(ret) < self.min:
+            raise ParamError(u'{}: length {} not in [{}, {}]'.format(self.name, len(ret), self.min, self.max))
         return ret
 
 

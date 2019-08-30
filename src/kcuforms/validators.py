@@ -26,7 +26,13 @@ def dict_type(dict_obj):
         if isinstance(dict_obj, dict):
             ret = dict_obj
         else:
-            ret = json.loads(dict_obj)
+            try:
+                ret = json.loads(dict_obj)
+            except JSONDecodeError as ex:
+                if 'Expecting property name enclosed in double quotes' in ex.msg:
+                    ret = ast.literal_eval(dict_obj)
+                else:
+                    raise ex
         return ret
     except Exception as ex:
         raise FieldError(u'Val: {}, Reason: {}, Type: list'.format(dict_obj, ex))
