@@ -1,7 +1,7 @@
 from flask_restful import reqparse
 
 from kcuforms.errors import FieldError
-from kcuforms.fields.core import BaseField, IntegerField
+from kcuforms.fields.core import BaseField, IntegerField, DictField
 
 __all__ = ("WebForm", "SearchWebForm")
 
@@ -92,6 +92,13 @@ class WebForm(BaseWebForm, metaclass=WebFormMeta):
         return args
 
 
-class SearchWebForm(WebForm):
+class SearchWebFormV1(WebForm):
     page = IntegerField(default=0)
     size = IntegerField(default=10)
+
+
+class SearchWebForm(WebForm):
+    pagination = DictField(required=True, validators={
+        'page': IntegerField(required=True, default=1),
+        'size': IntegerField(required=True, default=10)
+    })
