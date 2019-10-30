@@ -1,5 +1,7 @@
+import ast
 import json
 from datetime import datetime as dt
+from json import JSONDecodeError
 
 from kcuforms.errors import FieldError
 
@@ -15,7 +17,10 @@ def list_type(lst_obj):
         elif isinstance(lst_obj, dict):
             ret = [lst_obj]
         else:
-            ret = json.loads(lst_obj)
+            try:
+                ret = json.loads(lst_obj)
+            except JSONDecodeError as ex:
+                ret = ast.literal_eval(lst_obj)
         return ret
     except Exception as ex:
         raise FieldError(u'Val: {}, Reason: {}, Type: list'.format(lst_obj, ex))
