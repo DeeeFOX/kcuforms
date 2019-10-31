@@ -13,4 +13,4 @@ from kcuforms.fields import *
 from kcuforms.form import WebForm, SearchWebForm
 from kcuforms.errors import FieldError
 
-__version__ = "0.0.7dev"
+__version__ = "0.0.8dev"
