@@ -243,8 +243,8 @@ class ListArrayField(ListField):
     _MAX = sys.maxsize
     _VALIDATOR = StringField()
 
-    def __init__(self):
-        super(ListfArrayField, self).__init__(*args, **kwargs)
+    def __init__(self, *args, **kwargs):
+        super(ListArrayField, self).__init__(*args, **kwargs)
 
     @field_exception
     def validate(self, val):
@@ -252,7 +252,7 @@ class ListArrayField(ListField):
         for v in val:
             ret.append(self.validator.validate(v))
         if len(ret) > self.max or len(ret) < self.min:
-            raise ParamError(u'{}: length {} not in [{}, {}]'.format(self.name, len(ret), self.min, self.max))
+            raise FieldError(u'{}: length {} not in [{}, {}]'.format(self.name, len(ret), self.min, self.max))
         return ret
 
 
