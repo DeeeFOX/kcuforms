@@ -1,13 +1,14 @@
-from unittest import TestCase
-
-from kcuforms.form import WebForm
-from kcuforms.fields import IntegerField
+from kcuforms import WebForm, IntegerField, BooleanField
+from tests.test_base import test_app
 
 
-class IntegerFieldTest(TestCase):
-    class F(WebForm):
-        a = IntegerField(default=10)
-        b = IntegerField(default=48)
+class F(WebForm):
+    a = IntegerField(default=10)
+    b = IntegerField(default=48)
+    c = BooleanField(default=True)
 
-    def test(self):
-        self.assertEqual(self.F().get_form(), {'a': 10, 'b': 48})
+
+@test_app.route('/f', methods=['POST'])
+def func_F():
+    f = F().get_form()
+    return f
