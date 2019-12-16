@@ -6,10 +6,11 @@ from datetime import datetime as dt, date
 
 import re
 from functools import partial
+from typing import Union
 
 import six
 
-from kcuforms.validators import date_type, list_type, dict_type, many_type
+from kcuforms.validators import date_type, list_type, dict_type, many_type, bool_type
 
 from kcuforms.utils import field_exception
 from kcuforms.errors import FieldError
@@ -91,14 +92,15 @@ class IPv4Field(StringField):
 
 
 class BooleanField(BaseField):
-    _TYPE = bool
+    _TYPE = partial(bool_type)
     _DEFAULT = False
 
     def __init__(self, *args, **kwargs):
         super(BooleanField, self).__init__(*args, **kwargs)
+        self.type = self._TYPE
 
     @field_exception
-    def validate(self, val):
+    def validate(self, val: Union[str, bool, int]) -> bool:
         return self.type(val)
 
 

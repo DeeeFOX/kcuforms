@@ -12,10 +12,22 @@ class TestBase(TestCase):
 
     def test_f(self):
         with test_app.test_client() as client:
-            rv = client.post("/f", json={'c': False})
+            rv = client.post("/f", json={'c': 0})
+            rv = json.loads(rv.data.decode())
+            self.assertFalse(rv['c'])
+            rv = client.post("/f", json={'c': 1})
+            rv = json.loads(rv.data.decode())
+            self.assertTrue(rv['c'])
+            rv = client.post("/f", json={'c': 'True'})
+            rv = json.loads(rv.data.decode())
+            self.assertTrue(rv['c'])
+            rv = client.post("/f", json={'c': 'False'})
             rv = json.loads(rv.data.decode())
             self.assertFalse(rv['c'])
             rv = client.post("/f", json={'c': True})
             rv = json.loads(rv.data.decode())
             self.assertTrue(rv['c'])
+            rv = client.post("/f", json={'c': False})
+            rv = json.loads(rv.data.decode())
+            self.assertFalse(rv['c'])
 

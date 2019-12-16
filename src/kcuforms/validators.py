@@ -1,7 +1,9 @@
 import ast
 import json
 from datetime import datetime as dt
+from distutils.util import strtobool
 from json import JSONDecodeError
+from typing import Any
 
 from kcuforms.errors import FieldError
 
@@ -48,3 +50,10 @@ def many_type(range_string):
         return range_string
     else:
         return range_string.split(',')
+
+
+def bool_type(bool_string: Any) -> bool:
+    if isinstance(bool_string, bool):
+        return bool_string
+    else:
+        return bool(strtobool(str(bool_string)))
